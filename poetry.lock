@@ -311,6 +311,7 @@ sqlalchemy_utils = "^0.36.6"
 reference = "2e05bda7fe1e09d6188475218cb3f5f11f4a7672"
 type = "git"
 url = "https://github.com/Piratenpartei/ekklesia-common"
+
 [[package]]
 category = "main"
 description = "Logging library that tells you why it happened"

@@ -1,0 +1,16 @@
+h2 Eingereichter Antrag
+
+:markdown
+  Dieser Antrag ist eingereicht und hat genügend Unterstützer, um zur Abstimmung zugelassen zu werden.
+
+if current_user_is_submitter
+  p.
+    Du bist Antragsteller.
+
+  if current_user_is_supporter
+    p.
+      Wenn du deine Unterstützung zurückziehst, bleibst du weiterhin Antragsteller.
+
+elif current_user_is_supporter
+  p.
+    Du unterstützt diesen Antrag.

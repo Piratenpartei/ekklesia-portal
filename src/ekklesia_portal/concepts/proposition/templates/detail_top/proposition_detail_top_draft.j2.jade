@@ -1,0 +1,34 @@
+h2 Antragsentwurf
+
+:markdown
+  Dieser Antrag ist noch im Entwurfsstadium und nicht eingereicht!
+
+if current_user_is_submitter and current_user_is_author
+  p Du hast diesen Entwurf erstellt und bist Antragsteller.
+elif current_user_is_author
+  p Du hast diesen Entwurf angelegt, bist aber kein Antragsteller
+elif current_user_is_submitter
+  p Du bist Antragssteller.
+
+
+if ready_to_submit
+  p.
+    Dieser Antragsentwurf kann eingereicht werden.
+else
+  p.
+    Dieser Antragsentwurf braucht noch {{ missing_submitters_count }}
+    zusätzliche Antragsteller, um eingereicht werden zu können.
+
+  if current_user_is_author or current_user_is_submitter
+    p Teile den folgenden Link mit anderen, die Antragsteller werden sollen:
+    p
+      a(href=become_submitter_url)= become_submitter_url
+
+  if valid_submitter_invitation_key and not current_user_is_submitter
+    p Du wurdest dazu eingeladen, Antragsteller zu werden.
+
+    form.become_submitter_form(action=become_submitter_action, method="POST")
+      input(type="hidden",name="submitter_invitation_key", value=submitter_invitation_key)
+      button.btn.btn-primary.btn-sm(type="submit", name="become_submitter")
+          i.far.fa-thumbs-up &nbsp;
+          = _('button_become_submitter')
