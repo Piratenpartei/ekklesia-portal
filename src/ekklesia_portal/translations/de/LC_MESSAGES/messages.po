@@ -921,8 +921,10 @@ msgstr "Stichtag"
 #: src/ekklesia_portal/helper/missing_translations.py:3
 msgid "alert_ekklesia_login_not_allowed"
 msgstr ""
-"Du kannst die Anwendung nicht per %(name)s nutzen, da dir die "
-"erforderliche Rolle '%(role)s' fehlt."
+"Du kannst die Anwendung im Moment nicht per %(name)s nutzen, da dir die "
+"erforderliche Rolle '%(role)s' fehlt. Nach der Registrierung "
+"kann es bis zu einer Stunde dauern, bis dein Account überprüft wurde "
+"und du das Antragsportal nutzen kannst."
 
 #: src/ekklesia_portal/helper/missing_translations.py:4
 msgid "alert_logged_in_to"
