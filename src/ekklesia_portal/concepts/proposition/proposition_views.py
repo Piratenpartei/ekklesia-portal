@@ -232,19 +232,23 @@ def create(self, request, appstruct):
         status=PropositionStatus.DRAFT,
         submitter_invitation_key=submitter_invitation_key,
         visibility=PropositionVisibility.HIDDEN,
+        external_fields={'external_draft': {'editing_remarks': editing_remarks}},
         **appstruct
     )
-    proposition.external_fields = {'external_draft': {'editing_remarks': editing_remarks}}
-    supporter = Supporter(member=request.current_user, proposition=proposition, submitter=True)
-
     request.db_session.add(proposition)
-    request.db_session.add(supporter)
+
+    is_admin = request.identity.has_global_admin_permissions
+
+    if not is_admin:
+        supporter = Supporter(member=request.current_user, proposition=proposition, submitter=True)
+        request.db_session.add(supporter)
+
     request.db_session.flush()
 
     proposition_url = request.link(proposition)
     exporter_name = ballot.area.department.exporter_settings.get('exporter_name')
 
-    if exporter_name:
+    if exporter_name and not is_admin:
         try:
             with start_action(action_type="push_draft", exporter=exporter_name):
                 exporter_config = {**getattr(request.app.settings.exporter, exporter_name)}
