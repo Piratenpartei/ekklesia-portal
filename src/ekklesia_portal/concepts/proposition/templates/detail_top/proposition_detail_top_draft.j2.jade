@@ -27,8 +27,14 @@ else
   if valid_submitter_invitation_key and not current_user_is_submitter
     p Du wurdest dazu eingeladen, Antragsteller zu werden.
 
-    form.become_submitter_form(action=become_submitter_action, method="POST")
-      input(type="hidden",name="submitter_invitation_key", value=submitter_invitation_key)
-      button.btn.btn-primary.btn-sm(type="submit", name="become_submitter")
-          i.far.fa-thumbs-up &nbsp;
-          = _('button_become_submitter')
+
+    if current_user
+      form.become_submitter_form(action=become_submitter_action, method="POST")
+        input(type="hidden",name="submitter_invitation_key", value=submitter_invitation_key)
+        button.btn.btn-primary.btn-sm(type="submit", name="become_submitter")
+            i.far.fa-thumbs-up &nbsp;
+            = _('button_become_submitter')
+    else
+      p
+        a(href=login_url) Du musst dich erst anmelden.
+
