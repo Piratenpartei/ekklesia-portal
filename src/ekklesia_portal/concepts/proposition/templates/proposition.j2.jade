@@ -70,8 +70,8 @@
 
         = render_cell(collection=derivations, view_name='small', side='left')
 
-        if show_create_associated_proposition
-          a(href=new_associated_proposition_url("change"))
+        if show_create_change_proposition
+          a(href=new_associated_proposition_url("modifies"))
             .button_add_related
               i.far.fa-circle &nbsp;
               = _("button_add_change_proposition")
@@ -92,8 +92,8 @@
 
         = render_cell(collection=replacements, view_name='small', side='right')
 
-        if show_create_associated_proposition
-          a(href=new_associated_proposition_url("counter"))
+        if show_create_counter_proposition
+          a(href=new_associated_proposition_url("replaces"))
             .button_add_related
               i.fas.fa-circle &nbsp;
               = _("button_add_counter_proposition")

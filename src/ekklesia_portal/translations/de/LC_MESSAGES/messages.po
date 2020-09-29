@@ -666,15 +666,15 @@ msgstr "Änderungsantrag stellen"
 
 #: src/ekklesia_portal/concepts/proposition/templates/proposition.j2.jade:43
 msgid "title_proposition_replaces"
-msgstr "Ist Gegenantrag zu"
+msgstr "Ist Konkurrenzantrag zu"
 
 #: src/ekklesia_portal/concepts/proposition/templates/proposition.j2.jade:48
 msgid "title_proposition_replacements"
-msgstr "Gegenanträge"
+msgstr "Konkurrenzanträge"
 
 #: src/ekklesia_portal/concepts/proposition/templates/proposition.j2.jade:51
 msgid "button_add_counter_proposition"
-msgstr "Gegenantrag stellen"
+msgstr "Konkurrenzantrag stellen"
 
 #: src/ekklesia_portal/concepts/proposition/templates/proposition_actions.j2.jade:3
 msgid "button_support"
@@ -1210,7 +1210,7 @@ msgstr "Enthaltung"
 #~ msgstr "Änderungsantrag"
 
 #~ msgid "counter_proposition"
-#~ msgstr "Gegenantrag"
+#~ msgstr "Konkurrenzantrag"
 
 #~ msgid "tags"
 #~ msgstr "Tags"
@@ -1256,4 +1256,3 @@ msgstr "Enthaltung"
 
 #~ msgid "submit_draft"
 #~ msgstr "Antragsentwurf erstellen"
-

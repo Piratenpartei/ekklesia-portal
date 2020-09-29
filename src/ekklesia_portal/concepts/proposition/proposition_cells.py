@@ -13,7 +13,7 @@ from ekklesia_portal.concepts.argument_relation.argument_relations import Argume
 from ekklesia_portal.concepts.customizable_text.customizable_text_helper import customizable_text
 from ekklesia_portal.concepts.ekklesia_portal.cell.form import EditFormCell, NewFormCell
 from ekklesia_portal.concepts.ekklesia_portal.cell.layout import LayoutCell
-from ekklesia_portal.concepts.proposition.proposition_permissions import SubmitDraftPermission
+from ekklesia_portal.concepts.proposition.proposition_permissions import NewDraftPermission, SubmitDraftPermission
 from ekklesia_portal.datamodel import Department, Document, Proposition, PropositionNote, PropositionType, Tag, VotingPhase
 from ekklesia_portal.helper.url_shortener import make_tiny
 from ekklesia_portal.enums import ArgumentType, OpenSlidesVotingResult, PropositionStatus
@@ -175,8 +175,10 @@ class PropositionCell(LayoutCell):
     def associated_link_class(self):
         return 'active' if self.options.get('active_tab') == 'associated' else ''
 
-    def new_associated_proposition_url(self, association_type):
-        return self.class_link(Propositions, dict(association_type=association_type), '+new')
+    def new_associated_proposition_url(self, relation_type):
+        new_url = self.class_link(Propositions, {}, '+new')
+        querystring = urllib.parse.urlencode({"relation_type": relation_type, "related_proposition_id": self._model.id})
+        return f"{new_url}?{querystring}"
 
     def new_pro_argument_url(self):
         return self.class_link(
@@ -237,11 +239,14 @@ class PropositionCell(LayoutCell):
             PropositionStatus.VOTING, PropositionStatus.ABANDONED
         ) and self._request.permitted_for_current_user(ArgumentRelations(), CreatePermission)
 
-    def show_create_associated_proposition(self):
+    def show_create_counter_proposition(self):
         return self._model.status in (
             PropositionStatus.DRAFT, PropositionStatus.SUBMITTED, PropositionStatus.QUALIFIED,
             PropositionStatus.SCHEDULED
-        ) and self._request.permitted_for_current_user(self._model, CreatePermission)
+        ) and self._request.permitted_for_current_user(self._model, NewDraftPermission)
+
+    def show_create_change_proposition(self):
+        return self.show_create_counter_proposition and self._s.app.change_propositions_enabled
 
     def valid_submitter_invitation_key(self):
         key = self._request.GET.get("submitter_invitation_key")
@@ -320,6 +325,20 @@ class NewPropositionCell(NewFormCell):
 
     def new_draft_explanation(self):
         return customizable_text(self._request, 'new_draft_explanation')
+
+    def related_proposition_url(self):
+        return self.options.get("related_proposition_url")
+
+    def related_proposition_title(self):
+        return self.options.get("related_proposition_title")
+
+    def relation_type_title(self):
+        relation_type = self.options.get("relation_type")
+        if relation_type == "replaces":
+            return self._("title_proposition_replaces")
+        elif relation_type == "modifies":
+            return self._("title_proposition_modifies")
+        return None
 
 
 @App.cell(Proposition, 'edit')

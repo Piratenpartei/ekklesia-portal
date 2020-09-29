@@ -18,7 +18,7 @@ from ekklesia_portal.exporter.discourse import push_draft_to_discourse
 from ekklesia_portal.identity_policy import NoIdentity
 from ekklesia_portal.importer import PROPOSITION_IMPORT_HANDLERS
 from ekklesia_portal.lib.discourse import DiscourseError
-from ekklesia_portal.permission import CreatePermission, EditPermission, SupportPermission, ViewPermission, WritePermission
+from ekklesia_portal.permission import CreatePermission, EditPermission, SupportPermission, ViewPermission
 
 from .proposition_cells import EditPropositionCell, NewPropositionCell, PropositionCell, PropositionNewDraftCell, PropositionSubmitDraftCell, PropositionsCell
 from .proposition_contracts import PropositionEditForm, PropositionNewDraftForm, PropositionNewForm, PropositionSubmitDraftForm
@@ -67,8 +67,17 @@ def proposition_edit_permission(identity, model, permission):
 
 
 @App.permission_rule(model=Propositions, permission=NewDraftPermission)
-def proposition_new_draft_permission(identity, model, permission):
-    return identity != NoIdentity
+def propositions_new_draft_permission(identity, model, permission):
+    # TODO: All users can create propositions at the moment.
+    # This must be limited to the users of a department.
+    return True
+
+
+@App.permission_rule(model=Proposition, permission=NewDraftPermission)
+def associated_proposition_new_draft_permission(identity, model, permission):
+    # TODO: All users can create associated propositions at the moment.
+    # This must be limited to the users of a department.
+    return True
 
 
 @App.permission_rule(model=Proposition, permission=SubmitDraftPermission)
@@ -165,6 +174,7 @@ def index(self, request):
 def new(self, request):
     from_data = request.GET.get("from_data")
     source = request.GET.get("source")
+    related_proposition_id = request.GET.get("related_proposition_id")
 
     if from_data and source:
         # pre-fill new proposition form from a URL returning data formatted as `from_format`
@@ -180,11 +190,29 @@ def new(self, request):
             raise ValueError("unsupported proposition import schema: " + import_schema)
 
         form_data = import_handler(importer_config['base_url'], from_data)
+        options = {}
+    elif related_proposition_id:
+        related_proposition = request.q(Proposition).get(related_proposition_id)
+        if related_proposition is None:
+            raise HTTPBadRequest("related proposition does not exist")
+
+        related_proposition_url = request.link(related_proposition)
+        try:
+            relation_type = PropositionRelationType(request.GET.get("relation_type"))
+        except ValueError:
+            raise HTTPBadRequest("relation type is missing or invalid")
+        form_data = {"related_proposition_id": related_proposition_id, "relation_type": relation_type}
+        options = {
+            "related_proposition_url": related_proposition_url,
+            "related_proposition_title": related_proposition.title,
+            "relation_type": relation_type
+        }
     else:
         form_data = {}
+        options = {}
 
     form = PropositionNewForm(request, request.class_link(Propositions))
-    return NewPropositionCell(request, form, form_data).show()
+    return NewPropositionCell(request, form, form_data, **options).show()
 
 
 @App.html_form_post(model=Propositions, form=PropositionNewForm, cell=NewPropositionCell, permission=CreatePermission)
@@ -232,7 +260,9 @@ def create(self, request, appstruct):
         status=PropositionStatus.DRAFT,
         submitter_invitation_key=submitter_invitation_key,
         visibility=PropositionVisibility.HIDDEN,
-        external_fields={'external_draft': {'editing_remarks': editing_remarks}},
+        external_fields={'external_draft': {
+            'editing_remarks': editing_remarks
+        }},
         **appstruct
     )
     request.db_session.add(proposition)

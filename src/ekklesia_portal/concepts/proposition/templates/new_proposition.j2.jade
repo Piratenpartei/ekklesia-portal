@@ -6,6 +6,12 @@
 - block content
   h2= _("title_new_draft")
 
+  if related_proposition_url
+    p
+      = relation_type_title
+      |&nbsp;
+      a(href=related_proposition_url)= related_proposition_title
+
   = new_draft_explanation|markdown
 
   = form_html

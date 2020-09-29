@@ -263,7 +263,7 @@ if __name__ == "__main__":
     )
 
     q1_counter = Proposition(
-        title="Gegenantrag zu PP001",
+        title="Konkurrenzantrag zu PP001",
         content="will was anderes",
         voting_identifier="PP002",
         replaces=q1,
@@ -274,7 +274,7 @@ if __name__ == "__main__":
     )
 
     q1_counter_2 = Proposition(
-        title="Noch ein Gegenantrag zu PP001 mit Volltextsuche",
+        title="Noch ein Konkurrenzantrag zu PP001 mit Volltextsuche",
         content="will was ganz anderes, ich will Volltextsuche",
         voting_identifier="PP003",
         replaces=q1,
@@ -420,8 +420,8 @@ if __name__ == "__main__":
     )
     q5.tags.append(t3)
     q5_counter = Proposition(
-        title="Abgelehnter Gegenantrag zum Verschobenen Antrag PP007",
-        content="Gegenantrag von PP008",
+        title="Abgelehnter Konkurrenzantrag zum Verschobenen Antrag PP007",
+        content="Konkurrenzantrag von PP008",
         voting_identifier="PP008",
         external_discussion_url="http://example.com",
         modifies=q5,
