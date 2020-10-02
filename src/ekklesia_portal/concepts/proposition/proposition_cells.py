@@ -30,6 +30,7 @@ class PropositionCell(LayoutCell):
 
     model_properties = [
         'abstract',
+        'author',
         'ballot',
         'content',
         'created_at',
@@ -298,6 +299,9 @@ class PropositionCell(LayoutCell):
 
     def become_submitter_url(self):
         return self.self_link + f"?submitter_invitation_key={self._model.submitter_invitation_key}"
+
+    def submitter_names(self):
+        return [pm.member.name for pm in self._model.propositions_member if pm.submitter]
 
     def show_full_history(self):
         return self.options.get('show_details')

@@ -24,6 +24,11 @@ else
     p
       a(href=become_submitter_url)= become_submitter_url
 
+    p Aktuell sind Antragsteller:
+    ul
+      for name in submitter_names
+        li= name
+
   if valid_submitter_invitation_key and not current_user_is_submitter
     p Du wurdest dazu eingeladen, Antragsteller zu werden.
 
