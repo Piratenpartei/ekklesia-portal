@@ -153,7 +153,7 @@ class PropositionCell(LayoutCell):
         return self.link(self._model)
 
     def propositions_tag_url(self, tag):
-        return self.class_link(Propositions, dict(tag=tag.name))
+        return self.class_link(Propositions, dict(tags=tag.name))
 
     def current_user_is_supporter(self):
         if self.current_user is None:
