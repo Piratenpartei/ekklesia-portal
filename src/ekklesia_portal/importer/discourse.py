@@ -4,15 +4,21 @@ from eliot import start_action
 import requests
 
 
-def parse_raw_content(raw: str):
-    subsection_pattern = '((?:[^#]|#{3,})*)'
-    abstract_header = '^## (?:(?:Zusammenfassung)|(?:Abstract))\n+'
-    content_header = '^## (?:(?:Proposition)|(?:Antragstext))\n+'
-    motivation_header = '^## (?:(?:Motivation)|(?:Begründung))\n+'
+regex_flags = re.MULTILINE | re.UNICODE
+subsection_pattern = '((?:[^#]|#{3,})*)'
+abstract_header = '^## (?:(?:Zusammenfassung)|(?:Abstract))\n+'
+content_header = '^## (?:(?:Antragstext)|(?:Proposition))\n+'
+motivation_header = '^## (?:(?:Begründung)|(?:Motivation))\n+'
 
-    content_match = re.search(content_header + subsection_pattern, raw, re.MULTILINE)
-    abstract_match = re.search(abstract_header + subsection_pattern, raw, re.MULTILINE)
-    motivation_match = re.search(motivation_header + subsection_pattern, raw, re.MULTILINE)
+content_re = re.compile(content_header + subsection_pattern, regex_flags)
+abstract_re = re.compile(abstract_header + subsection_pattern, regex_flags)
+motivation_re = re.compile(motivation_header + subsection_pattern, regex_flags)
+
+def parse_raw_content(raw: str):
+
+    content_match = content_re.search(raw)
+    abstract_match = abstract_re.search(raw)
+    motivation_match = motivation_re.search(raw)
 
     with start_action(action_type="discourse_parse_raw_content", raw=raw, content_match=content_match,
                       abstract_match=abstract_match, motivation_match=motivation_match) as action:
