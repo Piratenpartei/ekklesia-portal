@@ -1,10 +1,11 @@
 import re
 
+from eliot import start_action
 import requests
 
 
 def parse_raw_content(raw: str):
-    subsection_pattern = '((?:[^#]|#{3,})+)'
+    subsection_pattern = '((?:[^#]|#{3,})*)'
     abstract_header = '^## (?:(?:Zusammenfassung)|(?:Abstract))\n+'
     content_header = '^## (?:(?:Proposition)|(?:Antragstext))\n+'
     motivation_header = '^## (?:(?:Motivation)|(?:Begründung))\n+'
@@ -13,21 +14,24 @@ def parse_raw_content(raw: str):
     abstract_match = re.search(abstract_header + subsection_pattern, raw, re.MULTILINE)
     motivation_match = re.search(motivation_header + subsection_pattern, raw, re.MULTILINE)
 
-    if content_match:
-        abstract = abstract_match.group(1).strip() if abstract_match else None
-        content = content_match.group(1).strip()
-        motivation = motivation_match.group(1).strip() if motivation_match else None
-    else:
-        content = raw
-        abstract = None
-        motivation = None
+    with start_action(action_type="discourse_parse_raw_content", raw=raw, content_match=content_match,
+                      abstract_match=abstract_match, motivation_match=motivation_match) as action:
 
-    return {
-        'abstract': abstract,
-        'content': content,
-        'motivation': motivation,
-        'all_matched': content and abstract and motivation
-    }
+        if content_match:
+            abstract = abstract_match.group(1).strip() if abstract_match else None
+            content = content_match.group(1).strip()
+            motivation = motivation_match.group(1).strip() if motivation_match else None
+            all_matched = bool(content_match and abstract_match and motivation_match)
+            action.add_success_fields(
+                all_matched=all_matched, abstract=abstract, content=content, motivation=motivation
+            )
+        else:
+            content = raw
+            abstract = None
+            motivation = None
+            all_matched = False
+
+    return {'abstract': abstract, 'content': content, 'motivation': motivation, 'all_matched': all_matched}
 
 
 def import_discourse_post_as_proposition(config: dict, from_data):
@@ -36,7 +40,7 @@ def import_discourse_post_as_proposition(config: dict, from_data):
     post_url = f"{base_url}/posts/{post_id}"
 
     headers = {'accept': 'application/json'}
-    if  "api_key" in config:
+    if "api_key" in config:
         headers['api-key'] = config["api_key"]
         headers['api-username'] = config["api_username"]
 
@@ -71,7 +75,7 @@ def import_discourse_topic_as_proposition(config: dict, import_info):
     topic_url = f"{base_url}/t/{topic_id}"
 
     headers = {'accept': 'application/json'}
-    if  "api_key" in config:
+    if "api_key" in config:
         headers['api-key'] = config["api_key"]
         headers['api-username'] = config["api_username"]
 
