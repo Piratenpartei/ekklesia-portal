@@ -30,8 +30,9 @@ else
         li= name
 
   if valid_submitter_invitation_key and not current_user_is_submitter
-    p Du wurdest dazu eingeladen, Antragsteller zu werden.
-
+    p.
+      Du wurdest dazu eingeladen, Antragsteller zu werden.
+      Dein Anmeldename im Portal wird veröffentlicht, wenn du Antragsteller bist.
 
     if current_user
       form.become_submitter_form(action=become_submitter_action, method="POST")
