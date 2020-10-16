@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-02 23:24+0000\n"
+"POT-Creation-Date: 2020-10-27 17:39+0000\n"
 "PO-Revision-Date: 2015-09-06 22:42+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -40,7 +40,7 @@ msgstr "Ausführlich"
 #: src/ekklesia_portal/concepts/argument_relation/argument_relation_contracts.py:18
 #: src/ekklesia_portal/concepts/ballot/ballot_contracts.py:20
 #: src/ekklesia_portal/concepts/customizable_text/customizable_text_contracts.py:18
-#: src/ekklesia_portal/concepts/department/department_contracts.py:17
+#: src/ekklesia_portal/concepts/department/department_contracts.py:18
 #: src/ekklesia_portal/concepts/document/document_contracts.py:20
 #: src/ekklesia_portal/concepts/ekklesia_portal/contracts/token.py:14
 #: src/ekklesia_portal/concepts/page/page_contracts.py:19
@@ -48,7 +48,7 @@ msgstr "Ausführlich"
 #: src/ekklesia_portal/concepts/proposition/proposition_contracts.py:86
 #: src/ekklesia_portal/concepts/proposition_note/proposition_note_contracts.py:20
 #: src/ekklesia_portal/concepts/proposition_type/proposition_type_contracts.py:18
-#: src/ekklesia_portal/concepts/voting_phase/voting_phase_contracts.py:24
+#: src/ekklesia_portal/concepts/voting_phase/voting_phase_contracts.py:25
 msgid "submit"
 msgstr "Senden"
 
@@ -262,6 +262,10 @@ msgstr "Beschreibung"
 #: src/ekklesia_portal/concepts/department/department_contracts.py:11
 msgid "exporter_settings"
 msgstr "Exporter-Einstellungen"
+
+#: src/ekklesia_portal/concepts/department/department_contracts.py:12
+msgid "voting_module_settings"
+msgstr "Einstellungen zu Abstimmungsmodulen"
 
 #: src/ekklesia_portal/concepts/department/templates/departments.j2.jade:5
 #: src/ekklesia_portal/concepts/ekklesia_portal/templates/index.j2.jade:23
@@ -548,12 +552,12 @@ msgstr "Regelwerk"
 msgid "days"
 msgstr "Tage"
 
-#: src/ekklesia_portal/concepts/proposition/proposition_cells.py:341
+#: src/ekklesia_portal/concepts/proposition/proposition_cells.py:342
 #: src/ekklesia_portal/concepts/proposition/templates/proposition.j2.jade:43
 msgid "title_proposition_replaces"
 msgstr "Ist Konkurrenzantrag zu"
 
-#: src/ekklesia_portal/concepts/proposition/proposition_cells.py:343
+#: src/ekklesia_portal/concepts/proposition/proposition_cells.py:344
 #: src/ekklesia_portal/concepts/proposition/templates/proposition.j2.jade:29
 msgid "title_proposition_modifies"
 msgstr "Ist Änderungsantrag zu"
@@ -803,7 +807,7 @@ msgstr "Anträge ohne Tags"
 msgid "no_propositions_found"
 msgstr "Keine Anträge gefunden"
 
-#: src/ekklesia_portal/concepts/proposition/templates/detail_top/proposition_detail_top_draft.j2.jade:22
+#: src/ekklesia_portal/concepts/proposition/templates/detail_top/proposition_detail_top_draft.j2.jade:25
 msgid "button_become_submitter"
 msgstr "Antragsteller werden"
 
@@ -947,10 +951,26 @@ msgstr "Art des Abstimmungszeitraums"
 msgid "secret_voting_possible"
 msgstr "Geheime Abstimmung möglich?"
 
+#: src/ekklesia_portal/concepts/voting_phase/voting_phase_contracts.py:19
+msgid "voting_module_data"
+msgstr "Daten für externe Abstimmungssysteme"
+
+#: src/ekklesia_portal/concepts/voting_phase/voting_phase_views.py:157
+msgid "voting_created_msg"
+msgstr "Abstimmung im Abstimmungsmodul %(voting_module)s erzeugt."
+
 #: src/ekklesia_portal/concepts/voting_phase/templates/edit_voting_phase.j2.jade:2
 #: src/ekklesia_portal/concepts/voting_phase/templates/edit_voting_phase.j2.jade:3
 msgid "title_edit_voting_phase"
 msgstr "Abstimmungszeitraum bearbeiten"
+
+#: src/ekklesia_portal/concepts/voting_phase/templates/edit_voting_phase.j2.jade:4
+msgid "title_create_voting"
+msgstr "Externe Abstimmungen anlegen"
+
+#: src/ekklesia_portal/concepts/voting_phase/templates/edit_voting_phase.j2.jade:7
+msgid "create_voting_button"
+msgstr "Abstimmung erzeugen (%(voting_module)s)"
 
 #: src/ekklesia_portal/concepts/voting_phase/templates/new_voting_phase.j2.jade:2
 #: src/ekklesia_portal/concepts/voting_phase/templates/new_voting_phase.j2.jade:3
